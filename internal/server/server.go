@@ -3,7 +3,6 @@ package server
 import (
 	"database/sql"
 	"fmt"
-	"net"
 	"net/http"
 
 	"github.com/damedelion/rest_wallet/config"
@@ -11,12 +10,12 @@ import (
 )
 
 type Server struct {
-	config *config.Config
+	config *config.Server
 	db     *sql.DB
 	mux    *mux.Router
 }
 
-func NewServer(config *config.Config, db *sql.DB, mux *mux.Router) *Server {
+func NewServer(config *config.Server, db *sql.DB, mux *mux.Router) *Server {
 	return &Server{config, db, mux}
 }
 
@@ -24,14 +23,10 @@ func (s *Server) Run() {
 	s.HandlerRegister()
 
 	server := http.Server{
-		Addr:    net.JoinHostPort("localhost", "8080"),
+		// Addr:    net.JoinHostPort("localhost", "8080"), // unreachable outside container
+		Addr:    fmt.Sprintf(":%d", s.config.Port), // i.e. ":3000" - is accessible outside the container
 		Handler: s.mux,
 	}
-
-	/* go func ()  {
-		fmt.Println("server is listening on %s", server.Addr)
-
-	} */
 
 	fmt.Printf("server is listening on %s\n", server.Addr)
 	server.ListenAndServe()

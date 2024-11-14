@@ -59,6 +59,7 @@ func (w *WalletDelivery) GetWallet(response http.ResponseWriter, request *http.R
 }
 
 func (w *WalletDelivery) ChangeBalance(response http.ResponseWriter, request *http.Request) {
+	fmt.Println("you are in create")
 	var changeDTO entities.ChangeBalanceDTO
 	err := json.NewDecoder(request.Body).Decode(&changeDTO)
 	if err != nil {

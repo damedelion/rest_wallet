@@ -24,3 +24,10 @@ amount: 1000
 GET api/v1/wallets/{WALLET_UUID}
 ```
 баланс выводится в теле ответа
+
+## Запуск
+```
+docker compose up -d postgres
+docker compose build
+docker compose up wallet_app
+```
